@@ -40,5 +40,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopMusic() {
+        Intent intent = new Intent(this,MediaService.class);
+        stopService(intent);
+
     }
 }

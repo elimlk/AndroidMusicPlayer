@@ -7,10 +7,32 @@
     tools:context=".MainActivity"
     android:orientation="vertical">
 
-    <Button
-        android:layout_width="match_parent"
+
+    <LinearLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_play"
-        android:text="Play"/>
+        android:layout_weight="6">
+
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:padding="15dp"
+        android:layout_margin="15sp"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3sp"
+            android:id="@+id/btn_play"
+            android:text="Play"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="3sp"
+            android:id="@+id/btn_stop"
+            android:text="stop"/>
+    </LinearLayout>
 
 </LinearLayout>
