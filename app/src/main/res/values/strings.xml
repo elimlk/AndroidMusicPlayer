@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AndroidMusicPlayer</string>
+    <string name="lnk_bob1">https://www.syntax.org.il/xtra/bob.m4a</string>
 </resources>
