@@ -14,15 +14,19 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MediaService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener {
     private MediaPlayer player = new MediaPlayer();
     //ArrayList<Song> songs;
     int currentPlaying = 0;
     final int NOTIF_ID = 1;
+    List<Song> songs = new ArrayList<Song>();
+
 
     @Nullable
     @Override
@@ -37,6 +41,7 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
         player.setOnPreparedListener(this);
         player.reset();
 
+
         NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
 
 
@@ -48,6 +53,7 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
             manager.createNotificationChannel(channel);
         }
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,channelId);
+
         builder.setSmallIcon(android.R.drawable.ic_media_play);
         RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.music_notif);
 
@@ -82,14 +88,15 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         String command  = intent.getStringExtra("command");
+        songs = intent.getParcelableArrayListExtra("songsList");
 
         switch (command) {
             case "new_instance":
                 if (!player.isPlaying()) {
-                    //songs = intent.getStringArrayListExtra("list");
                     try {
-                        player.setDataSource("https://www.syntax.org.il/xtra/bob.m4a"); //songs.get(currentPlaying));
+                        player.setDataSource(songs.get(currentPlaying).getLinkSong()); //songs.get(currentPlaying));
                         player.prepareAsync();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -124,17 +131,17 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
     private void playSong(boolean isNext)  {
         if(isNext) {
             currentPlaying++;
-            if (currentPlaying == 2)
+            if (currentPlaying == songs.size()-1)
                 currentPlaying = 0;
         }
         else {
             currentPlaying--;
             if(currentPlaying < 0)
-                currentPlaying = 2 - 1;
+                currentPlaying = songs.size() - 1;
         }
         player.reset();
         try {
-            player.setDataSource("https://www.syntax.org.il/xtra/bob1.m4a");
+            player.setDataSource(songs.get(currentPlaying).getLinkSong());
             player.prepareAsync();
         } catch (IOException e) {
             e.printStackTrace();
