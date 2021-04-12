@@ -22,10 +22,10 @@ public class AddSongFragment extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
 
-        callBackActivity = new MainActivity();
-        btn_add = getView().findViewById(R.id.btn_fragAddSong);
+       // callBackActivity = new MainActivity();
+/*        btn_add = getView().findViewById(R.id.btn_fragAddSong);
         et_name = getView().findViewById(R.id.et_frag_songName);
-        et_artist = getView().findViewById(R.id.et_frag_songArtist);
+        et_artist = getView().findViewById(R.id.et_frag_songArtist);*/
 
         super.onCreate(savedInstanceState);
     }

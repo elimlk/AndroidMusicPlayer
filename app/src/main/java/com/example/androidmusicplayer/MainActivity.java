@@ -60,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         songAdapter.setListener(new SongAdapter.SongListener() {
             @Override
             public void onSongClicked(int position, View view) {
-                new DetailsSongFrafment().show(getSupportFragmentManager(),addSongFragTag);
+                new DetailsSongFrafment(songs.get(position)).show(getSupportFragmentManager(),"SongFragDetailsTag");
+
             }
 
             @Override
