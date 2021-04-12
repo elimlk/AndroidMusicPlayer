@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -90,13 +91,14 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         String command  = intent.getStringExtra("command");
-        songs = intent.getParcelableArrayListExtra("songsList");
+
 
         switch (command) {
             case "new_instance":
+                songs = (ArrayList<Song>) intent.getSerializableExtra("songsList");
                 if (!player.isPlaying()) {
                     try {
-                        player.setDataSource(songs.get(currentPlaying).getLinkSong()); //songs.get(currentPlaying));
+                        player.setDataSource(songs.get(currentPlaying).getLinkSong());
                         player.prepareAsync();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -104,8 +106,9 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
                 }
                 break;
             case "play":
-                if (!player.isPlaying())
+                if (!player.isPlaying()) {
                     player.start();
+                }
                 break;
             case "next":
                 if (player.isPlaying())
@@ -159,19 +162,20 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
         }
     }
 
+
     @Override
     public void onCompletion(MediaPlayer mp) {
         playSong(true);
-//        currentPlaying++;
-////        if(currentPlaying == songsSize)
-////            currentPlaying = 1;
-//        player.reset();
-//        try {
-//            player.setDataSource("https://www.syntax.org.il/xtra/bob.m4a");
-//            player.prepareAsync();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        currentPlaying++;
+        if(currentPlaying == songs.size()-1)
+            currentPlaying = 0;
+        player.reset();
+        try {
+            player.setDataSource(songs.get(currentPlaying).getLinkSong());
+            player.prepareAsync();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

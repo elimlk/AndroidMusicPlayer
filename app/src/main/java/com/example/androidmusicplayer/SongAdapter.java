@@ -46,6 +46,23 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
             tv_artistName = itemView.findViewById(R.id.song_artist);
             tv_songDuration = itemView.findViewById(R.id.song_duration);
             iv_songPic = itemView.findViewById(R.id.songPic);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!=null)
+                        listener.onSongClicked(getAbsoluteAdapterPosition(),v);
+                }
+            });
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (listener !=null)
+                        listener.onSongLongCliked(getAbsoluteAdapterPosition(),v);
+                    return false;
+                }
+            });
         }
     }
 
@@ -75,5 +92,6 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     @Override
     public int getItemViewType(int position) {
         return super.getItemViewType(position);
+
     }
 }
