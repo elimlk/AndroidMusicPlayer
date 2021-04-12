@@ -29,9 +29,41 @@
             android:id="@+id/et_frag_songArtist"
             android:background="@color/offWhite"
             />
+        <EditText
+            android:layout_width="200sp"
+            android:layout_height="30sp"
+            android:textColor="@color/white"
+            android:hint="Song link"
+            android:gravity="center"
+            android:layout_margin="3sp"
+            android:id="@+id/et_frag_songLink"
+            android:background="@color/offWhite"
+            />
+        <LinearLayout android:layout_height="30sp"
+            android:layout_width="200sp"
+            android:orientation="horizontal">
+        <EditText
+            android:layout_width="150sp"
+            android:layout_height="30sp"
+            android:textColor="@color/white"
+            android:hint="picture link"
+            android:gravity="center"
+            android:layout_marginTop="3sp"
+            android:id="@+id/et_frag_songPicLink"
+            android:background="@color/offWhite"
+            />
+            <ImageButton
+                android:layout_width="40sp"
+                android:layout_height="40sp"
+                android:src="@drawable/ic_baseline_camera_alt_24"
+                android:background="@color/material_on_surface_stroke"
+                android:id="@+id/btn_takePicFrag"/>
+        </LinearLayout>
+
         <ImageButton android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="10dp"
             android:src="@drawable/ic_baseline_add_circle_24"
             android:background="@color/material_on_surface_stroke"
             android:id="@+id/btn_fragAddSong"/>

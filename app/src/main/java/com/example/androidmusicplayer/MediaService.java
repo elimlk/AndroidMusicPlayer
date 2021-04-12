@@ -58,10 +58,11 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
         builder.setSmallIcon(android.R.drawable.ic_media_play);
         RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.music_notif);
 
+
         Intent playIntent = new Intent(this,MediaService.class);
         playIntent.putExtra("command","play");
         PendingIntent playPendingIntent  = PendingIntent.getService(this,0,playIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.btn_play,playPendingIntent);
+        remoteViews.setOnClickPendingIntent(R.id.btn_notif_play,playPendingIntent);
         
         Intent pauseIntent = new Intent(this,MediaService.class);
         pauseIntent.putExtra("command","pause");
@@ -91,12 +92,10 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         String command  = intent.getStringExtra("command");
-
-
         switch (command) {
             case "new_instance":
-                songs = (ArrayList<Song>) intent.getSerializableExtra("songsList");
                 if (!player.isPlaying()) {
+                    songs = (ArrayList<Song>) intent.getSerializableExtra("songsList");
                     try {
                         player.setDataSource(songs.get(currentPlaying).getLinkSong());
                         player.prepareAsync();
