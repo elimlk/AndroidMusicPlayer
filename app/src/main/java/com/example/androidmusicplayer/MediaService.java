@@ -103,7 +103,8 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+                    }
+
                 break;
             case "play":
                 if (!player.isPlaying()) {

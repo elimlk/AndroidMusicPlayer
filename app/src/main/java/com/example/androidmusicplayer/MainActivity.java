@@ -1,9 +1,14 @@
 package com.example.androidmusicplayer;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -21,16 +26,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     SharedPreferences sp;
-
+    final String addSongFragTag = "addSongFragTag";
     boolean isPlaying = false;
     Boolean firstTime;
+    Boolean firstTime1;
     ImageButton btnPlay;
     ImageButton btnNext;
     ImageButton btnBack;
+    ImageButton btnAddSong;
     TextView tvSongTitle;
     ArrayList<Song> songs;
 
@@ -43,10 +51,8 @@ public class MainActivity extends AppCompatActivity {
         firstTime = sp.getBoolean("firstTime",true);
         if (firstTime){
             initData();
-        }
-        loadData();
-
-
+        }else
+            loadData();
         RecyclerView recyclerView = findViewById(R.id.recyclerView_songs);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -54,16 +60,36 @@ public class MainActivity extends AppCompatActivity {
         songAdapter.setListener(new SongAdapter.SongListener() {
             @Override
             public void onSongClicked(int position, View view) {
-                Toast toast = Toast.makeText(MainActivity.this,songs.get(position).getName(),Toast.LENGTH_SHORT);
-                toast.show();
+                new DetailsSongFrafment().show(getSupportFragmentManager(),addSongFragTag);
             }
 
             @Override
             public void onSongLongCliked(int position, View view) {
-                songs.remove(position);
-                songAdapter.notifyItemRemoved(position);
+
             }
         });
+
+        ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(ItemTouchHelper.DOWN|ItemTouchHelper.UP,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                int fromPosition = viewHolder.getAbsoluteAdapterPosition();
+                int toPosition = target.getAbsoluteAdapterPosition();
+                Collections.swap(songs, fromPosition, toPosition);
+                recyclerView.getAdapter().notifyItemMoved(fromPosition, toPosition);
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                if (direction == ItemTouchHelper.RIGHT || direction==ItemTouchHelper.LEFT) {
+                    songs.remove(viewHolder.getAbsoluteAdapterPosition());
+                    songAdapter.notifyItemRemoved(viewHolder.getAbsoluteAdapterPosition());
+                }
+            }
+        };
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.setAdapter(songAdapter);
 
         btnPlay = findViewById(R.id.btn_play);
@@ -96,6 +122,17 @@ public class MainActivity extends AppCompatActivity {
                 prevSong();
             }
         });
+
+        btnAddSong = findViewById(R.id.btn_addSong);
+        btnAddSong.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddSongFragment().show(getSupportFragmentManager(),addSongFragTag);
+                //Toast toast = Toast.makeText(MainActivity.this,"add song",Toast.LENGTH_SHORT);
+                //toast.show();
+            }
+        });
+
 
 
     }
@@ -153,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
     private void loadData()
     {
         try {
-            FileInputStream fis  = openFileInput("person");
+            FileInputStream fis  = openFileInput("songs");
             ObjectInputStream ois  = new ObjectInputStream(fis);
             this.songs = (ArrayList<Song>) ois.readObject();
             ois.close();
@@ -168,9 +205,9 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     protected void onPause() {
-        super.onPause();
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("firstTime",false);
+        editor.commit();
         FileOutputStream fos = null;
         try {
             fos = openFileOutput("songs",MODE_PRIVATE);
@@ -182,6 +219,8 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        super.onPause();
 
     }
+
 }
