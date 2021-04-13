@@ -166,35 +166,18 @@ public class MainActivity extends AppCompatActivity implements AddSongFragment.A
     }
 
     @Override
+    protected void onPause() {
+        saveData();
+        super.onPause();
+
+    }
+
+    @Override
     public void addSong(Song s) {
         songs.add(s);
         songAdapter.notifyDataSetChanged();
 
     }
-
-    private void initData(){
-        songs = new ArrayList<Song>();
-        Song song1 = new Song("bob1","Bob Dylan","details","https://www.syntax.org.il/xtra/bob.m4a","https://i1.sndcdn.com/artworks-000094489078-rpuzes-t500x500.jpg");
-        Song song2 = new Song("bob2","Bob Dylan","details","https://www.syntax.org.il/xtra/bob1.m4a","https://m.media-amazon.com/images/I/51eA5COaHEL._SS500_.jpg");
-        Song song3 = new Song("bob3","Bob Dylan","details","https://www.syntax.org.il/xtra/bob2.mp3","https://miro.medium.com/max/4800/1*_EDEWvWLREzlAvaQRfC_SQ.jpeg");
-        Song song4 = new Song("bob4","Bob Dylan","details","https://www.syntax.org.il/xtra/bob.m4a","https://cdn.vox-cdn.com/thumbor/R9BcMgY3tn_Tl_TtgTkOU9YRlFM=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/13399919/dylan_hyden_getty_ringer.jpg");
-        Song song5 = new Song("bob5","Bob Dylan","details","https://www.syntax.org.il/xtra/bob1.m4a","https://cdn.vox-cdn.com/thumbor/swceSx93LvCtw2-DYAjE5xBW5KY=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/9757317/BobDylan_Getty_Ringer.jpg");
-        Song song6 = new Song("bob6","Bob Dylan","details","https://www.syntax.org.il/xtra/bob2.mp3","https://images-na.ssl-images-amazon.com/images/I/61-xzhcCLOL._SL1200_.jpg");
-        Song song7 = new Song("bob7","Bob Dylan","details","https://www.syntax.org.il/xtra/bob.m4a","https://i1.sndcdn.com/artworks-000094489078-rpuzes-t500x500.jpg");
-        Song song8 = new Song("bob8","Bob Dylan","details","https://www.syntax.org.il/xtra/bob1.m4a","https://m.media-amazon.com/images/I/51eA5COaHEL._SS500_.jpg");
-        Song song9 = new Song("bob9","Bob Dylan","details","https://www.syntax.org.il/xtra/bob2.mp3","https://images-na.ssl-images-amazon.com/images/I/91i%2BepjraeL.jpg");
-        songs.add(song1);
-        songs.add(song2);
-        songs.add(song3);
-        songs.add(song4);
-        songs.add(song5);
-        songs.add(song6);
-        songs.add(song7);
-        songs.add(song8);
-        songs.add(song9);
-
-    }
-
 
     private void nextSong(){
         Intent intent = new Intent(MainActivity.this,MediaService.class);
@@ -210,9 +193,31 @@ public class MainActivity extends AppCompatActivity implements AddSongFragment.A
         startService(intent);
     }
 
+    private void initData(){
+        songs = new ArrayList<Song>();
+        Song song1 = new Song("One More Cup of Coffee","Bob Dylan","released on January 5, 1976 by Columbia Records.","https://www.syntax.org.il/xtra/bob.m4a","https://i1.sndcdn.com/artworks-000094489078-rpuzes-t500x500.jpg");
+        Song song2 = new Song("Sara","Bob Dylan","released on January 5, 1976 by Columbia Records","https://www.syntax.org.il/xtra/bob1.m4a","https://m.media-amazon.com/images/I/51eA5COaHEL._SS500_.jpg");
+        Song song3 = new Song("The Man In ME","Bob Dylan","released on 1970 by Columbia Records","https://www.syntax.org.il/xtra/bob2.mp3","https://miro.medium.com/max/4800/1*_EDEWvWLREzlAvaQRfC_SQ.jpeg");
+        Song song4 = new Song("bob4","Bob Dylan","details","https://www.syntax.org.il/xtra/bob.m4a","https://cdn.vox-cdn.com/thumbor/R9BcMgY3tn_Tl_TtgTkOU9YRlFM=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/13399919/dylan_hyden_getty_ringer.jpg");
+        Song song5 = new Song("bob5","Bob Dylan","details","https://www.syntax.org.il/xtra/bob1.m4a","https://cdn.vox-cdn.com/thumbor/swceSx93LvCtw2-DYAjE5xBW5KY=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/9757317/BobDylan_Getty_Ringer.jpg");
+        Song song6 = new Song("bob6","Bob Dylan","details","https://www.syntax.org.il/xtra/bob2.mp3","https://images-na.ssl-images-amazon.com/images/I/61-xzhcCLOL._SL1200_.jpg");
+        Song song7 = new Song("bob7","Bob Dylan","details","https://www.syntax.org.il/xtra/bob.m4a","https://i1.sndcdn.com/artworks-000094489078-rpuzes-t500x500.jpg");
+        Song song8 = new Song("bob8","Bob Dylan","details","https://www.syntax.org.il/xtra/bob1.m4a","https://m.media-amazon.com/images/I/51eA5COaHEL._SS500_.jpg");
+        Song song9 = new Song("bob9","Bob Dylan","details","https://www.syntax.org.il/xtra/bob2.mp3","https://images-na.ssl-images-amazon.com/images/I/91i%2BepjraeL.jpg");
 
-    private void loadData()
-    {
+        songs.add(song1);
+        songs.add(song2);
+        songs.add(song3);
+        songs.add(song4);
+        songs.add(song5);
+        songs.add(song6);
+        songs.add(song7);
+        songs.add(song8);
+        songs.add(song9);
+
+    }
+
+    private void loadData() {
         try {
             FileInputStream fis  = openFileInput("songs");
             ObjectInputStream ois  = new ObjectInputStream(fis);
@@ -227,8 +232,8 @@ public class MainActivity extends AppCompatActivity implements AddSongFragment.A
             e.printStackTrace();
         }
     }
-    @Override
-    protected void onPause() {
+
+    private void saveData() {
         SharedPreferences.Editor editor = sp.edit();
         editor.putBoolean("firstTime",false);
         editor.commit();
@@ -243,8 +248,7 @@ public class MainActivity extends AppCompatActivity implements AddSongFragment.A
         } catch (IOException e) {
             e.printStackTrace();
         }
-        super.onPause();
-
     }
+
 
 }

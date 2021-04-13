@@ -24,7 +24,7 @@ import java.util.List;
 public class MediaService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener {
     private MediaPlayer player = new MediaPlayer();
     //ArrayList<Song> songs;
-    int currentPlaying = 0;
+    int currentPlaying = (-1);
     final int NOTIF_ID = 1;
     List<Song> songs = new ArrayList<Song>();
 
@@ -97,8 +97,12 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
                 if (!player.isPlaying()) {
                     songs = (ArrayList<Song>) intent.getSerializableExtra("songsList");
                     try {
-                        player.setDataSource(songs.get(currentPlaying).getLinkSong());
-                        player.prepareAsync();
+                        if (currentPlaying == -1){
+                            currentPlaying =0;
+                            player.setDataSource(songs.get(currentPlaying).getLinkSong());
+                            player.prepareAsync();
+                        }else
+                            player.start();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -134,13 +138,13 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
     private void playSong(boolean isNext)  {
         if(isNext) {
             currentPlaying++;
-            if (currentPlaying == songs.size()-1)
+            if (currentPlaying == songs.size())
                 currentPlaying = 0;
         }
         else {
             currentPlaying--;
             if(currentPlaying < 0)
-                currentPlaying = songs.size() - 1;
+                currentPlaying = songs.size()-1;
         }
         player.reset();
         try {

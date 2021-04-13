@@ -79,7 +79,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         Song song = songs.get(position);
         holder.tv_songName.setText(song.getName());
         holder.tv_artistName.setText(song.getArtist());
-        holder.tv_songDuration.setText(song.getLength()+" ");
+        holder.tv_songDuration.setText(song.getLength()+" min");
         Glide.with(context).load(song.getLinkPic())
                 .into(holder.iv_songPic);
     }

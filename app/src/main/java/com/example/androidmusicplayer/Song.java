@@ -1,9 +1,11 @@
 package com.example.androidmusicplayer;
 
 import android.media.MediaMetadataRetriever;
+import android.media.MediaPlayer;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 
@@ -24,12 +26,23 @@ public class Song implements Serializable {
         this.details = details;
         this.linkSong = linkSong;
         this.linkPic = linkPic;
-        //this.length = calcDuration();
+//        Thread thread = new Thread(){
+//            @Override
+//            public void run() {
+//                super.run();
+//                length =calcDuration();
+//            }
+//        };
+//        thread.start();
+
+
     }
 
 
 
-    private float calcDuration(){
+    public float calcDuration(){
+
+
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         mmr.setDataSource(linkSong, new HashMap<String, String>());
         String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);

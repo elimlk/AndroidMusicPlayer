@@ -1,26 +1,25 @@
 package com.example.androidmusicplayer;
-
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class AddSongFragment extends DialogFragment {
+    final int CAMERA_REQ = 1;
+    final int WRITE_PERMISSION_REQ =1;
     private ImageButton btn_add;
     private EditText et_name;
     private EditText et_artist;
     MainActivity callBackActivity;
+
+
 
     public interface AddSongEventListener{
         public void addSong(Song s);
@@ -84,10 +83,9 @@ public class AddSongFragment extends DialogFragment {
                 et_picLink.setText("picture link from camera");
             }
         });
+
         return v;
     }
-
-
 
 
 
