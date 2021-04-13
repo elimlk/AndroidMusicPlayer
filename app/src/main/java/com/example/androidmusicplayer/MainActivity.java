@@ -2,6 +2,7 @@ package com.example.androidmusicplayer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -57,8 +58,11 @@ public class MainActivity extends AppCompatActivity implements AddSongFragment.A
         songAdapter.setListener(new SongAdapter.SongListener() {
             @Override
             public void onSongClicked(int position, View view) {
-                new DetailsSongFrafment(songs.get(position)).show(getSupportFragmentManager(),"SongFragDetailsTag");
+                Song clickedSong = songs.get(position);
 
+                FragmentManager fm = getSupportFragmentManager();
+                DetailsSongFrafment songDetailsFragment = DetailsSongFrafment.newInstance(clickedSong);
+                songDetailsFragment.show(fm, "fragment_Details");
             }
 
             @Override
@@ -158,7 +162,10 @@ public class MainActivity extends AppCompatActivity implements AddSongFragment.A
         btnAddSong.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AddSongFragment().show(getSupportFragmentManager(),addSongFragTag);
+                //new AddSongFragment().show(getSupportFragmentManager(),addSongFragTag);
+                FragmentManager fm = getSupportFragmentManager();
+                AddSongFragment addSongDialogFragment = AddSongFragment.newInstance("Add song fragment");
+                addSongDialogFragment.show(fm, "fragment_add_song");
                 //Toast toast = Toast.makeText(MainActivity.this,"add song",Toast.LENGTH_SHORT);
                 //toast.show();
             }
@@ -250,5 +257,8 @@ public class MainActivity extends AppCompatActivity implements AddSongFragment.A
         }
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
 }
