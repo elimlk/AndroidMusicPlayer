@@ -9,7 +9,9 @@
     android:elevation="30sp"
     app:cardCornerRadius="10sp"
     android:layout_marginHorizontal="15dp"
-    app:cardBackgroundColor="@color/teal_700">
+    android:alpha="1"
+    app:cardBackgroundColor="@color/teal_700"
+    android:id="@+id/linerCellSong">
 
 
         <ImageView
@@ -32,6 +34,12 @@
                 android:layout_gravity="center|start"
                 android:layout_marginTop="15dp"
                 android:text="Song name"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scrollHorizontally="true"
                 android:textColor="@color/white"
                 android:textSize="17sp" />
 
@@ -46,15 +54,15 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/song_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView android:layout_height="30sp"
+            android:layout_width="30sp"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginTop="5dp"
-            android:text="Song duration"
-            android:textColor="@color/white"
-            android:textSize="15sp" />
+            android:layout_marginHorizontal="10sp"
+            android:src="@drawable/ic_baseline_play_arrow_24"
+            android:visibility="invisible"
+            android:id="@+id/iv_playFlag"/>
+
+
 
 
 

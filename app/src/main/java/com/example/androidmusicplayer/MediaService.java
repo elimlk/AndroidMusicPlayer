@@ -1,5 +1,6 @@
 package com.example.androidmusicplayer;
 
+import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,6 +10,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
@@ -24,9 +26,9 @@ import java.util.List;
 public class MediaService extends Service implements MediaPlayer.OnCompletionListener, MediaPlayer.OnPreparedListener {
     private MediaPlayer player = new MediaPlayer();
     //ArrayList<Song> songs;
-    int currentPlaying = (-1);
+    //int currentPlaying = (-1);
     final int NOTIF_ID = 1;
-    List<Song> songs = new ArrayList<Song>();
+    List<Song> songs = SongsListSingelton.getInstance().songs;
 
 
     @Nullable
@@ -56,6 +58,7 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,channelId);
 
         builder.setSmallIcon(android.R.drawable.ic_media_play);
+
         RemoteViews remoteViews = new RemoteViews(getPackageName(),R.layout.music_notif);
 
 
@@ -95,14 +98,19 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
         switch (command) {
             case "new_instance":
                 if (!player.isPlaying()) {
-                    songs = (ArrayList<Song>) intent.getSerializableExtra("songsList");
+                    songs = SongsListSingelton.getInstance().songs;
                     try {
-                        if (currentPlaying == -1){
-                            currentPlaying =0;
-                            player.setDataSource(songs.get(currentPlaying).getLinkSong());
-                            player.prepareAsync();
-                        }else
+                        if (SongsListSingelton.getInstance().currentPlayGlobal == -1){
+                            if(songs.size()>0){
+                                SongsListSingelton.getInstance().currentPlayGlobal =0;
+                                player.setDataSource(songs.get(SongsListSingelton.getInstance().currentPlayGlobal).getLinkSong());
+                                player.prepareAsync();
+                                SongsListSingelton.getInstance().updateTitleSong();
+                            }
+                        }else {
                             player.start();
+                            SongsListSingelton.getInstance().updateTitleSong();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -111,18 +119,27 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
                 break;
             case "play":
                 if (!player.isPlaying()) {
-                    player.start();
+                    if (songs.size()>0){
+                        player.start();
+                        SongsListSingelton.getInstance().updateTitleSong();
+                    }
                 }
                 break;
             case "next":
                 if (player.isPlaying())
                     player.stop();
-                playSong(true);
+                if (songs.size()>0) {
+                    playSong(true);
+                    SongsListSingelton.getInstance().updateTitleSong();
+                }
                 break;
             case "back":
                 if (player.isPlaying())
                     player.stop();
-                playSong(false);
+                if (songs.size()>0){
+                    playSong(false);
+                    SongsListSingelton.getInstance().updateTitleSong();
+                }
                 break;
             case "pause":
                 if (player.isPlaying())
@@ -135,21 +152,25 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
         return super.onStartCommand(intent, flags, startId);
     }
 
+
     private void playSong(boolean isNext)  {
         if(isNext) {
-            currentPlaying++;
-            if (currentPlaying == songs.size())
-                currentPlaying = 0;
+            SongsListSingelton.getInstance().currentPlayGlobal++;
+            if (SongsListSingelton.getInstance().currentPlayGlobal == songs.size())
+                SongsListSingelton.getInstance().currentPlayGlobal = 0;
         }
         else {
-            currentPlaying--;
-            if(currentPlaying < 0)
-                currentPlaying = songs.size()-1;
+            SongsListSingelton.getInstance().currentPlayGlobal--;
+            if(SongsListSingelton.getInstance().currentPlayGlobal < 0)
+                SongsListSingelton.getInstance().currentPlayGlobal = songs.size()-1;
         }
         player.reset();
         try {
-            player.setDataSource(songs.get(currentPlaying).getLinkSong());
-            player.prepareAsync();
+            if (songs.size()>0){
+                player.setDataSource(songs.get(SongsListSingelton.getInstance().currentPlayGlobal).getLinkSong());
+                player.prepareAsync();
+            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -170,21 +191,13 @@ public class MediaService extends Service implements MediaPlayer.OnCompletionLis
     @Override
     public void onCompletion(MediaPlayer mp) {
         playSong(true);
-        currentPlaying++;
-        if(currentPlaying == songs.size()-1)
-            currentPlaying = 0;
-        player.reset();
-        try {
-            player.setDataSource(songs.get(currentPlaying).getLinkSong());
-            player.prepareAsync();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //SongsListSingelton.getInstance().currentPlayGlobal;=songs.indexOf(songs.get(SongsListSingelton.getInstance().currentPlayGlobal;));
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
         player.start();
+        SongsListSingelton.getInstance().updateTitleSong();
 
     }
 }

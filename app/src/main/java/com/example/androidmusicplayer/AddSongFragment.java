@@ -90,7 +90,7 @@ public class AddSongFragment extends DialogFragment {
         et_songArtist = v.findViewById(R.id.et_frag_songArtist);
         et_songLink = v.findViewById(R.id.et_frag_songLink);
         et_picLink = v.findViewById(R.id.et_frag_songPicLink);
-
+        btn_TakePic.setVisibility(View.GONE);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,18 +103,18 @@ public class AddSongFragment extends DialogFragment {
         btn_TakePic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (android.os.Build.VERSION.SDK_INT >= 23) {
-                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
-                    StrictMode.setVmPolicy(builder.build());
-                    file = new File(Environment.getExternalStorageDirectory(),"Pic.jpg");
-                    Uri fileUri = Uri.fromFile(file);
-                    Uri photoURI = FileProvider.getUriForFile(getContext(),getContext().getApplicationContext().getPackageName() +".provider",file);
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT,fileUri);
-                    startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                }
-                Toast toast = Toast.makeText(getContext(),"picture",Toast.LENGTH_SHORT);
-                toast.show();
+//                if (android.os.Build.VERSION.SDK_INT >= 23) {
+//                    StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+//                    StrictMode.setVmPolicy(builder.build());
+//                    file = new File(Environment.getExternalStorageDirectory(),"Pic.jpg");
+//                    Uri fileUri = Uri.fromFile(file);
+//                    Uri photoURI = FileProvider.getUriForFile(getContext(),getContext().getApplicationContext().getPackageName() +".provider",file);
+//                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                    intent.putExtra(MediaStore.EXTRA_OUTPUT,photoURI);
+//                    startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+//                }
+//                Toast toast = Toast.makeText(getContext(),"picture",Toast.LENGTH_SHORT);
+//                toast.show();
                 et_picLink.setText("picture link from camera");
             }
         });
@@ -136,7 +136,6 @@ public class AddSongFragment extends DialogFragment {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
-
                 et_picLink.setText(file.getAbsolutePath());
             }
         }

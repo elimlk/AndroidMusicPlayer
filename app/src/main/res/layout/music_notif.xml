@@ -8,22 +8,16 @@
     android:orientation="vertical">
         <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-            <TextView android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="9"
-                android:text="song Title"
-                android:gravity="center"
-                android:textSize="10sp"
-                android:id="@+id/tv_notif_title" />
+            android:gravity="right"
+            android:paddingHorizontal="10dp">
+
             <ImageButton
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_baseline_close_off_24"
                 android:background="@null"
-                android:layout_weight="1"
                 android:id="@+id/btn_notif_close"
+                android:layout_gravity="end"
                 />
         </LinearLayout>
         <LinearLayout android:layout_width="match_parent"
@@ -35,7 +29,7 @@
                 android:layout_height="35sp"
                 android:layout_marginEnd="3sp"
                 android:background="@null"
-                android:src="@drawable/ic_baseline_skip_previous_24"
+                android:src="@drawable/back_button"
                 android:id="@+id/btn_notif_back"
                 android:scaleType="fitXY" />
             <ImageButton
@@ -44,7 +38,7 @@
                 android:layout_marginEnd="3sp"
                 android:id="@+id/btn_notif_play"
                 android:background="@null"
-                android:src="@drawable/ic_baseline_play_circle_outline_24"
+                android:src="@drawable/play_button"
                 android:scaleType="fitXY" />
             <ImageButton
                 android:layout_width="35sp"
@@ -52,14 +46,14 @@
                 android:layout_marginEnd="3sp"
                 android:id="@+id/btn_notif_pause"
                 android:background="@null"
-                android:src="@drawable/ic_baseline_pause_circle_outline_24"
+                android:src="@drawable/pause_button"
                 android:scaleType="fitXY" />
             <ImageButton
                 android:layout_width="35sp"
                 android:layout_height="35sp"
                 android:layout_marginEnd="3sp"
                 android:background="@null"
-                android:src="@drawable/ic_baseline_skip_next_24"
+                android:src="@drawable/next_button"
                 android:id="@+id/btn_notif_next"
                 android:scaleType="fitXY" />
 

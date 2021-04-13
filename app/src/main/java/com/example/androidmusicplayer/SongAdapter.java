@@ -23,6 +23,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
     interface SongListener {
         void onSongClicked(int position,View view);
         void onSongLongCliked(int position,View view);
+        void onSongPlayed(int postion,View view);
     }
 
     public void setListener(SongListener listener){
@@ -43,8 +44,9 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         public SongViewHolder(@NonNull View itemView) {
             super(itemView);
             tv_songName = itemView.findViewById(R.id.song_name);
+            tv_songName.setSelected(true);
             tv_artistName = itemView.findViewById(R.id.song_artist);
-            tv_songDuration = itemView.findViewById(R.id.song_duration);
+            //tv_songDuration = itemView.findViewById(R.id.song_duration);
             iv_songPic = itemView.findViewById(R.id.songPic);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +81,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         Song song = songs.get(position);
         holder.tv_songName.setText(song.getName());
         holder.tv_artistName.setText(song.getArtist());
-        holder.tv_songDuration.setText(song.getLength()+" min");
+        //holder.tv_songDuration.setText(song.getLength()+" min");
         Glide.with(context).load(song.getLinkPic())
                 .into(holder.iv_songPic);
     }

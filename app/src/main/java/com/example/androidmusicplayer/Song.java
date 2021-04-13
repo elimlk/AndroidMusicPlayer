@@ -39,6 +39,9 @@ public class Song implements Serializable {
     }
 
 
+    public static int getLastId() {
+        return lastId;
+    }
 
     public float calcDuration(){
 
